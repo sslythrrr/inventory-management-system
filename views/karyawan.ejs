@@ -19,7 +19,13 @@
     <link rel="stylesheet" href="/fonts/material-icons.min.css">
     <link rel="stylesheet" href="/fonts/fontawesome5-overrides.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
-
+    <script>
+        (function () {
+            if (localStorage.getItem('sidebarCollapsed') === 'true') {
+                document.documentElement.classList.add('sidebar-collapsed-init');
+            }
+        })();
+    </script>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 
@@ -179,25 +185,27 @@
                             <div class="card-body">
                                 <div class="row align-items-center">
                                     <div class="col-md-6 text-nowrap">
-                                        <div id="dataTable_length" class="d-flex align-items-center" aria-controls="dataTable">
-                                            <select class="form-select-sm me-3" id="entriesSelect" onchange="changeEntries(this.value)" style="width: auto;">
-                                                <option value="10" <%= limit == 10 ? 'selected' : '' %>>10</option>
-                                                <option value="25" <%= limit == 25 ? 'selected' : '' %>>25</option>
-                                                <option value="50" <%= limit == 50 ? 'selected' : '' %>>50</option>
-                                                <option value="100" <%= limit == 100 ? 'selected' : '' %>>100</option>
+                                        <div id="dataTable_length" class="d-flex align-items-center"
+                                            aria-controls="dataTable">
+                                            <select class="form-select-sm me-3" id="entriesSelect"
+                                                onchange="changeEntries(this.value)" style="width: auto;">
+                                                <option value="10" <%=limit==10 ? 'selected' : '' %>>10</option>
+                                                <option value="25" <%=limit==25 ? 'selected' : '' %>>25</option>
+                                                <option value="50" <%=limit==50 ? 'selected' : '' %>>50</option>
+                                                <option value="100" <%=limit==100 ? 'selected' : '' %>>100</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-6 d-flex justify-content-end">
-                                        <% if (role !== 'atasan') { %>
+                                        <% if (role !=='atasan' ) { %>
                                             <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
                                                 data-bs-target="#addKaryawanModal" style="background: #1cda18;">
                                                 <i class="fas fa-plus me-2"></i>Buat Baru
                                             </button>
-                                        <% } %>
-                                        <button type="button" class="btn btn-secondary" id="printBtn">
-                                            <i class="fas fa-print me-2"></i>Cetak
-                                        </button>
+                                            <% } %>
+                                                <button type="button" class="btn btn-secondary" id="printBtn">
+                                                    <i class="fas fa-print me-2"></i>Cetak
+                                                </button>
                                     </div>
                                 </div>
                                 <div class="table-responsive table mt-2" id="dataTable" role="grid"
@@ -207,72 +215,73 @@
                                             <p>Menampilkan hasil pencarian untuk: "<%= searchQuery %>"</p>
                                             <a href="/karyawan" class="clear-search">Tampilkan Semua</a>
                                         </div>
-                                    <% } %>
-                                    <table class="table table-striped table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th style="width: 15%;">NIK</th>
-                                                <th>Nama Karyawan</th>
-                                                <th>Jabatan</th>
-                                                <th style="width: 15%;">Jenis Kelamin</th>
-                                                <% if (role !== 'atasan') { %>
-                                                <th class="px-4 py-3 text-sm font-semibold tracking-wide text-center"
-                                                    style="width:10%;">
-                                                    Opsi
-                                                </th>
-                                                <% } %>
-                                            </tr>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <% if(karyawan.length> 0) { %>
-                                                <% karyawan.forEach(item=> { %>
+                                        <% } %>
+                                            <table class="table table-striped table-hover">
+                                                <thead>
                                                     <tr>
-                                                        <td class="px-4 py-3 text-center">
-                                                            <%= item.id_karyawan %>
-                                                        </td>
-                                                        <td>
-                                                            <%= item.nama_karyawan %>
-                                                        </td>
-                                                        <td>
-                                                            <%= item.jabatan %>
-                                                        </td>
-                                                        <td class="px-4 py-3 text-center">
-                                                            <%= item.jenis_kelamin %>
-                                                        </td>
-                                                        <% if (role !== 'atasan') { %>
-                                                        <td class="px-4 py-3 text-center">
-                                                            <div class="btn-group" role="group">
-                                                     <!--         <button class="btn btn-white btn-sm"
+                                                        <th style="width: 15%;">NIK</th>
+                                                        <th>Nama Karyawan</th>
+                                                        <th>Jabatan</th>
+                                                        <th style="width: 15%;">Jenis Kelamin</th>
+                                                        <% if (role !=='atasan' ) { %>
+                                                            <th class="px-4 py-3 text-sm font-semibold tracking-wide text-center"
+                                                                style="width:10%;">
+                                                                Opsi
+                                                            </th>
+                                                            <% } %>
+                                                    </tr>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% if(karyawan.length> 0) { %>
+                                                        <% karyawan.forEach(item=> { %>
+                                                            <tr>
+                                                                <td class="px-4 py-3 text-center">
+                                                                    <%= item.id_karyawan %>
+                                                                </td>
+                                                                <td>
+                                                                    <%= item.nama_karyawan %>
+                                                                </td>
+                                                                <td>
+                                                                    <%= item.jabatan %>
+                                                                </td>
+                                                                <td class="px-4 py-3 text-center">
+                                                                    <%= item.jenis_kelamin %>
+                                                                </td>
+                                                                <% if (role !=='atasan' ) { %>
+                                                                    <td class="px-4 py-3 text-center">
+                                                                        <div class="btn-group" role="group">
+                                                                            <!--         <button class="btn btn-white btn-sm"
                                                                     data-bs-toggle="modal"
                                                                     data-bs-target="#editKaryawanModal" title="Edit"
                                                                     onclick="getKaryawanDetail('<%= item.id_karyawan %>')">
                                                                     <i class="fas fa-ellipsis-v"></i>
-                                                                </button>-->  
-                                                                
-                                                                <button class="btn btn-danger btn-sm"
-                                                                    data-bs-toggle="popup" title="Hapus"
-                                                                    onclick="confirmDeleteK('<%= item.id_karyawan %>')">
-                                                                    <i class="fas fa-trash"></i>
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                        <% } %>
-                                                    </tr>
-                                                    <% }); %>
-                                                        <% } else { %>
-                                                            <tr>
-                                                                <td colspan="8" class="text-center">Tidak ada data</td>
+                                                                </button>-->
+
+                                                                            <button class="btn btn-danger btn-sm"
+                                                                                data-bs-toggle="popup" title="Hapus"
+                                                                                onclick="confirmDeleteK('<%= item.id_karyawan %>')">
+                                                                                <i class="fas fa-trash"></i>
+                                                                            </button>
+                                                                        </div>
+                                                                    </td>
+                                                                    <% } %>
                                                             </tr>
-                                                            <% } %>
-                                        </tbody>
-                                    </table>
+                                                            <% }); %>
+                                                                <% } else { %>
+                                                                    <tr>
+                                                                        <td colspan="8" class="text-center">Tidak ada
+                                                                            data</td>
+                                                                    </tr>
+                                                                    <% } %>
+                                                </tbody>
+                                            </table>
                                 </div>
                                 <div class="row" style="margin-top: 20px;">
                                     <div class="col-md-6 align-self-center">
                                         <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">
-                                            Menampilkan <%= (currentPage - 1) * limit + 1 %> - <%= Math.min(currentPage *
-                                                    limit, totalData) %> dari <%= totalData %>
+                                            Menampilkan <%= (currentPage - 1) * limit + 1 %> - <%= Math.min(currentPage
+                                                    * limit, totalData) %> dari <%= totalData %>
                                         </p>
                                     </div>
                                     <div class="col-md-6">

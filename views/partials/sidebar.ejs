@@ -1,4 +1,7 @@
 <nav class="navbar align-items-start sidebar sidebar-dark accordion">
+    <div class="sidebar-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-chevron-left"></i>
+    </div>
     <div class="container-fluid d-flex flex-column p-0">
         <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
             <img src="/img/inventas.png" style="width: 150px; padding: 0px; margin-right: 30px;margin-top: 50px;">
@@ -23,45 +26,82 @@
                     <span>Pemilik Barang</span>
                 </a>
             </li>
-            <% if (role === 'atasan') { %>
+            <% if (role==='atasan' ) { %>
                 <li class="nav-item">
-                    <a class="nav-link <%= (locals.url && url.includes('/atasan/lelang')) ? 'active' : '' %>" href="/atasan/lelang">
+                    <a class="nav-link <%= (locals.url && url.includes('/atasan/lelang')) ? 'active' : '' %>"
+                        href="/atasan/lelang">
                         <i class="fa fa-gavel"></i>
                         <span>Manajemen Lelang</span>
                     </a>
                 </li>
-            <% } else { %>
-                <li class="nav-item">
-                    <a class="nav-link <%= (locals.url && url.includes('/lelang')) ? 'active' : '' %>" href="/lelang">
-                        <i class="fa fa-gavel"></i>
-                        <span>Manajemen Lelang</span>
-                    </a>
-                </li>
-            <% } %>
-            <li class="nav-item">
-                <a class="nav-link <%= (locals.url && url.includes('/jual')) ? 'active' : '' %>" href="/jual">
-                    <i class="fas fa-tags"></i>
-                    <span>Jual Barang</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link <%= (locals.url && url.includes('/karyawan')) ? 'active' : '' %>" href="/karyawan">
-                    <i class="fas fa-id-badge"></i>
-                    <span>Daftar Karyawan</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link <%= (locals.url && url.includes('/penjualan')) ? 'active' : '' %>" href="/penjualan">
-                    <i class="fas fa-chart-line"></i>
-                    <span>Data Penjualan</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link <%= (locals.url && url.includes('/chatbot')) ? 'active' : '' %>" href="/chatbot">
-                    <i class="fas fa-robot"></i>
-                    <span>Chatbot</span>
-                </a>
-            </li>
+                <% } else { %>
+                    <li class="nav-item">
+                        <a class="nav-link <%= (locals.url && url.includes('/lelang')) ? 'active' : '' %>"
+                            href="/lelang">
+                            <i class="fa fa-gavel"></i>
+                            <span>Manajemen Lelang</span>
+                        </a>
+                    </li>
+                    <% } %>
+                        <li class="nav-item">
+                            <a class="nav-link <%= (locals.url && url.includes('/jual')) ? 'active' : '' %>"
+                                href="/jual">
+                                <i class="fas fa-tags"></i>
+                                <span>Jual Barang</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link <%= (locals.url && url.includes('/karyawan')) ? 'active' : '' %>"
+                                href="/karyawan">
+                                <i class="fas fa-id-badge"></i>
+                                <span>Daftar Karyawan</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link <%= (locals.url && url.includes('/penjualan')) ? 'active' : '' %>"
+                                href="/penjualan">
+                                <i class="fas fa-chart-line"></i>
+                                <span>Data Penjualan</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link <%= (locals.url && url.includes('/chatbot')) ? 'active' : '' %>"
+                                href="/chatbot">
+                                <i class="fas fa-robot"></i>
+                                <span>Chatbot</span>
+                            </a>
+                        </li>
         </ul>
     </div>
 </nav>
+<script>
+    function toggleSidebar() {
+        const sidebar = document.querySelector('.sidebar');
+        const toggleIcon = document.querySelector('.sidebar-toggle i');
+        document.documentElement.classList.remove('sidebar-collapsed-init');
+
+        sidebar.classList.toggle('collapsed');
+
+        if (sidebar.classList.contains('collapsed')) {
+            toggleIcon.classList.remove('fa-chevron-left');
+            toggleIcon.classList.add('fa-chevron-right');
+        } else {
+            toggleIcon.classList.remove('fa-chevron-right');
+            toggleIcon.classList.add('fa-chevron-left');
+        }
+
+        localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+
+        if (isCollapsed) {
+            setTimeout(() => {
+                document.documentElement.classList.remove('sidebar-collapsed-init');
+                document.querySelector('.sidebar').classList.add('collapsed');
+                document.querySelector('.sidebar-toggle i').classList.replace('fa-chevron-left', 'fa-chevron-right');
+            }, 0);
+        }
+    });
+</script>

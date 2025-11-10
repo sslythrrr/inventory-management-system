@@ -19,6 +19,13 @@
     <link rel="stylesheet" href="/fonts/material-icons.min.css">
     <link rel="stylesheet" href="/fonts/fontawesome5-overrides.min.css">
     <link rel="stylesheet" href="/css/styles.css">
+    <script>
+        (function() {
+            if (localStorage.getItem('sidebarCollapsed') === 'true') {
+                document.documentElement.classList.add('sidebar-collapsed-init');
+            }
+        })();
+    </script>
 </head>
 
 <body id="page-top">

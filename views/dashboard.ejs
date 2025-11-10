@@ -18,6 +18,13 @@
   <link rel="stylesheet" href="/fonts/font-awesome.min.css">
   <link rel="stylesheet" href="/fonts/material-icons.min.css">
   <link rel="stylesheet" href="/fonts/fontawesome5-overrides.min.css">
+   <script>
+        (function() {
+            if (localStorage.getItem('sidebarCollapsed') === 'true') {
+                document.documentElement.classList.add('sidebar-collapsed-init');
+            }
+        })();
+    </script>
   <link rel="stylesheet" href="/css/styles.css">
 </head>
 
@@ -27,8 +34,9 @@
       <div id="content-wrapper" class="d-flex flex-column">
         <div id="content">
           <%- include('partials/topbar', { searchQuery: locals.searchQuery }) %>
-            <div class="container-fluid p-4">
-              <div class="col-12">
+          <div class="container-fluid">
+            <!--<div class="container-fluid p-4">
+             <div class="col-12">
                 <div
                   style="background: #fff3cd; border-radius: 12px; border-left: 4px solid #f6c23e; padding: 16px; color: #856404;margin-bottom:20px;margin-top:-30px">
                   <div class="d-flex align-items-center gap-2">
@@ -36,7 +44,7 @@
                     <span>Peringatan: <%= peringatan %></span>
                   </div>
                 </div>
-              </div>
+              </div>-->
               <div class="row g-4 mb-4">
                 <div class="col-12 col-md-6 col-xl-3">
                   <div
