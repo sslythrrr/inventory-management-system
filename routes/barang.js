@@ -6,7 +6,6 @@ const sharp = require('sharp');
 const path = require('path');
 const fs = require('fs');
 
-// Pastikan folder uploads ada
 const uploadDir = path.join(__dirname, '../public/uploads/barang');
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
@@ -97,7 +96,6 @@ router.post('/', requireLogin, upload.single('gambar_barang'), async (req, res) 
   let gambar_path = null;
 
 if (req.file) {
-  // Kompres gambar yang udah disimpan di folder
   const inputPath = req.file.path;
   const outputFilename = `inventas-${req.file.filename}`;
   const outputPath = path.join(uploadDir, outputFilename);
@@ -107,7 +105,6 @@ if (req.file) {
     .jpeg({ quality: 80 })
     .toFile(outputPath);
   
-  // Hapus file original, pakai yang compressed
   fs.unlinkSync(inputPath);
   
   gambar_path = `/uploads/barang/${outputFilename}`;
@@ -256,7 +253,6 @@ router.post('/edit', requireLogin, upload.single('gambar_barang'), async (req, r
 let gambar_path = null;
 
 if (req.file) {
-  // Hapus gambar lama kalau ada
   const [oldData] = await connection.query(
     'SELECT gambar_barang FROM barang WHERE id_barang = ?',
     [id_barang]
@@ -269,7 +265,6 @@ if (req.file) {
     }
   }
   
-  // Kompres gambar baru
   const inputPath = req.file.path;
   const outputFilename = `inventas-${req.file.filename}`;
   const outputPath = path.join(uploadDir, outputFilename);
@@ -286,7 +281,6 @@ if (req.file) {
 
     await connection.beginTransaction();
 
-    // Prepare update query
     let updateBarangQuery = `
       UPDATE barang 
       SET nama_barang = ?,
@@ -630,7 +624,6 @@ router.get('/delete/:id_barang', requireLogin, async (req, res) => {
 
     const nama_barang = barangResult[0].nama_barang;
 
-    // Hapus file gambar fisik
 const [barangData] = await connection.query(
   'SELECT gambar_barang FROM barang WHERE id_barang = ?',
   [id_barang]

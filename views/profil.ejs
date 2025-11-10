@@ -52,10 +52,10 @@
                                                         <input type="file" id="photoInput" name="photo" class="d-none"
                                                             accept="image/*">
                                                         <button
-                                                            style="background-color: #2563eb; color: white; border: none; padding: 0.5rem 1.5rem; border-radius: 0.5rem; transition: all 0.3s ease; cursor: pointer;"
+                                                            style="background-color: #2a3345; color: white; border: none; padding: 0.5rem 1.5rem; border-radius: 0.5rem; transition: all 0.3s ease; cursor: pointer;"
                                                             type="button"
-                                                            onmouseover="this.style.backgroundColor='#1d4ed8'"
-                                                            onmouseout="this.style.backgroundColor='#2563eb'"
+                                                            onmouseover="this.style.backgroundColor='#5d6574'"
+                                                            onmouseout="this.style.backgroundColor='#2a3345'"
                                                             onclick="document.getElementById('photoInput').click()">
                                                             <i class="fas fa-camera me-2"></i>Ganti Foto
                                                         </button>
@@ -69,7 +69,7 @@
                                     <div
                                         style="background: white; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 1rem;">
                                         <div style="padding: 1.5rem; border-bottom: 1px solid #e5e7eb;">
-                                            <h5 style="color: #2563eb; font-weight: 600; margin: 0;">
+                                            <h5 style="color: #5a5c69 ; font-weight: 600; margin: 0;">
                                                 <%= locals.userRole==='atasan' ? 'Profil Atasan' : 'Pengaturan Pengguna'
                                                     %>
                                             </h5>
@@ -129,10 +129,10 @@
                                                         <% if (locals.userRole !=='atasan' ) { %>
                                                             <div style="display: flex; justify-content: center;">
                                                                 <button
-                                                                    style="background-color: #2563eb; color: white; border: none; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 500; transition: all 0.3s ease; cursor: pointer;"
+                                                                    style="background-color: #2a3345; color: white; border: none; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 500; transition: all 0.3s ease; cursor: pointer;"
                                                                     type="submit"
-                                                                    onmouseover="this.style.backgroundColor='#1d4ed8'"
-                                                                    onmouseout="this.style.backgroundColor='#2563eb'">
+                                                                    onmouseover="this.style.backgroundColor='#5d6574'"
+                                                                    onmouseout="this.style.backgroundColor='#2a3345'">
                                                                     Simpan Perubahan
                                                                 </button>
                                                             </div>

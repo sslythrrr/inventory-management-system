@@ -1,12 +1,13 @@
-/* Chatbot Styles */
+/* chatbot */
 
 .bot-response-wrapper {
     display: inline-flex;
     flex-direction: column;
-    background: #e9ecef;
+    background: rgba(45, 45, 45, 0.05);
     border-radius: 15px;
     padding: 12px;
     max-width: 85%;
+    border: 1px solid rgba(212, 175, 55, 0.2);
 }
 
 .bot-response-wrapper .message-text-above {
@@ -26,11 +27,12 @@
     flex-direction: column;
     max-width: 100%;
     width: 100%;
-    background: #f2f6f2;
-    color: #333;
+    background: rgba(45, 45, 45, 0.03);
+    color: #2d2d2d;
     padding: 10px 14px;
     border-radius: 30px 30px 30px 4px;
     margin-bottom: 0;
+    border: 1px solid rgba(212, 175, 55, 0.15);
 }
 
 .message-text-above {
@@ -66,7 +68,7 @@
 }
 
 .quick-reply-chip {
-    background: #042e5b91;
+    background: #777879;
     border: none;
     color: white;
     margin-left: 10px;
@@ -123,7 +125,7 @@
     content: "";
     display: block;
     height: 1px;
-    background: #007bff;
+    background: #5b5690da;
     margin-top: 2px;
 }
 
@@ -159,7 +161,7 @@
     top: 50%;
     transform: translateY(-50%);
     background: rgba(255, 255, 255, 0.95);
-    color: #007bff;
+    color: #5b5690da;
     border: 1px solid #dee2e6;
     border-radius: 50%;
     width: 28px;
@@ -175,7 +177,7 @@
 }
 
 .carousel-arrow:hover {
-    background: #007bff;
+    background: #5b5690da;
     color: white;
     transform: translateY(-50%) scale(1.05);
     box-shadow: 0 3px 8px rgba(0, 123, 255, 0.3);
@@ -198,7 +200,7 @@
 .carousel-arrow:disabled:hover {
     transform: translateY(-50%) scale(1);
     background: rgba(255, 255, 255, 0.5);
-    color: #007bff;
+    color: #5b5690da;
 }
 
 .item-card {
@@ -249,7 +251,7 @@
 }
 
 .card-info i {
-    color: #007bff;
+    color: #5b5690da;
     font-size: 11px;
     min-width: 14px;
 }
@@ -439,7 +441,7 @@
 }
 
 .btn-modal-primary {
-    background: #007bff;
+    background: #5b5690da;
     color: white;
 }
 
@@ -486,7 +488,7 @@
 }
 
 .user-message {
-    background: #007bff;
+    background: #5b5690da;
     color: white;
     margin-left: auto;
 }
@@ -507,7 +509,7 @@
 }
 
 .bot-message strong {
-    color: #007bff;
+    color: #5b5690da;
     font-weight: 600;
 }
 
@@ -568,7 +570,7 @@
 }
 
 .help-button-compact {
-    background: #042e5b91;
+    background: #777879;
     border: none;
     border-radius: 16px;
     padding: 4px 12px;
@@ -620,7 +622,7 @@
 }
 
 .user-message {
-    background: #007bff;
+    background: #5b5690da;
     color: white;
     margin-left: auto;
     border-radius: 18px 18px 4px 18px;
@@ -635,7 +637,7 @@
 
 .action-button {
     display: inline-block;
-    background: #007bff;
+    background: #5b5690da;
     color: #fff;
     padding: 6px 12px;
     border-radius: 8px;

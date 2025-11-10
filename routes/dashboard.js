@@ -10,9 +10,9 @@ router.get('/', requireLogin, async (req, res) => {
     const [akanLelang] = await db.query('SELECT COUNT(id_barang) as total FROM barang WHERE status_barang = "lelang"');
     const [barangTersedia] = await db.query('SELECT COUNT(id_barang) as total FROM barang WHERE status_barang = "tersedia"');
     const [barangJual] = await db.query('SELECT COUNT(id_barang) as total FROM barang WHERE status_barang = "jual"');
-    
+
     const [notif] = await db.query('SELECT COUNT(id_notifikasi) as total FROM notifikasi WHERE status_baca = "0"');
-    
+
     const [peringatanResult] = await db.query('SELECT pesan FROM notifikasi ORDER BY id_notifikasi DESC LIMIT 1');
     const peringatan = peringatanResult.length ? peringatanResult[0].pesan : 'Tidak ada notifikasi';
 
@@ -73,6 +73,75 @@ router.get('/', requireLogin, async (req, res) => {
   } catch (error) {
     console.error('Error:', error);
     res.status(500).send('Internal Server Error');
+  }
+});
+
+router.get('/api/karyawan-count', requireLogin, async (req, res) => {
+  try {
+    const [result] = await db.query('SELECT COUNT(id_karyawan) as total FROM karyawan');
+    res.json({ total: result[0]?.total || 0 });
+  } catch (error) {
+    console.error('Error karyawan-count:', error);
+    res.status(200).json({ total: 0 });
+  }
+});
+
+router.get('/api/kategori-count', requireLogin, async (req, res) => {
+  try {
+    const [result] = await db.query('SELECT COUNT(DISTINCT kategori) as total FROM barang WHERE kategori IS NOT NULL AND kategori != ""');
+    res.json({ total: result[0]?.total || 0 });
+  } catch (error) {
+    console.error('Error kategori-count:', error);
+    res.status(200).json({ total: 0 });
+  }
+});
+
+router.get('/api/recent-activities', requireLogin, async (req, res) => {
+  try {
+    const [activities] = await db.query(`
+      SELECT jenis_aktivitas, detail_perubahan, timestamp 
+      FROM log_aktivitas 
+      ORDER BY timestamp DESC 
+      LIMIT 5
+    `);
+    res.json({ activities: activities || [] });
+  } catch (error) {
+    console.error('Error recent-activities:', error);
+    res.status(200).json({ activities: [] });
+  }
+});
+
+router.get('/api/top-kategori', requireLogin, async (req, res) => {
+  try {
+    const [categories] = await db.query(`
+      SELECT kategori, COUNT(*) as total 
+      FROM barang 
+      WHERE kategori IS NOT NULL AND kategori != ""
+      GROUP BY kategori 
+      ORDER BY total DESC 
+      LIMIT 3
+    `);
+    res.json({ categories: categories || [] });
+  } catch (error) {
+    console.error('Error top-kategori:', error);
+    res.status(200).json({ categories: [] });
+  }
+});
+
+router.get('/api/lelang-berakhir', requireLogin, async (req, res) => {
+  try {
+    const [auctions] = await db.query(`
+      SELECT b.nama_barang, l.waktu_selesai 
+      FROM lelang l
+      JOIN barang b ON l.id_barang = b.id_barang
+      WHERE l.status_lelang = 'sedang lelang' 
+      ORDER BY l.waktu_selesai ASC 
+      LIMIT 3
+    `);
+    res.json({ auctions: auctions || [] });
+  } catch (error) {
+    console.error('Error lelang-berakhir:', error);
+    res.status(200).json({ auctions: [] });
   }
 });
 

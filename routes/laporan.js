@@ -34,7 +34,7 @@ router.get('/print',requireLogin, async (req, res) => {
             font: { bold: false, size: 14, name: 'Times New Roman', },
         };
 
-        worksheet.getCell('A2').value = 'PT TASPEN (PERSERO) CABANG BOGOR';
+        worksheet.getCell('A2').value = 'LAPORAN INVENTARIS BARANG';
         worksheet.getCell('A3').value = `PERIODE: ${moment().format('DD MMMM YYYY')}`;
         worksheet.getCell('A6').value = '';
 
@@ -158,9 +158,9 @@ router.get('/print',requireLogin, async (req, res) => {
 
         worksheet.getCell(`F${footerRow}`).value = 'Bogor, ' + moment().format('DD MMMM YYYY');
 
-        worksheet.getCell(`F${footerRow + 1}`).value = 'BRANCH MANAGER KC BOGOR';
-        worksheet.getCell(`F${footerRow + 4}`).value = 'ARDI';
-        worksheet.getCell(`F${footerRow + 5}`).value = 'NIK. 2029';
+        worksheet.getCell(`F${footerRow + 1}`).value = 'BRANCH MANAGER';
+        worksheet.getCell(`F${footerRow + 4}`).value = 'Panji';
+        worksheet.getCell(`F${footerRow + 5}`).value = 'NIK. 067';
 
         res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         res.setHeader('Content-Disposition', 'attachment; filename=Laporan_Mitra_Binaan.xlsx');

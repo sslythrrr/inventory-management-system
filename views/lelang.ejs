@@ -108,7 +108,7 @@
                                 <a href="/barang" class="clear-search">Tampilkan Semua</a>
                             </div>
                             <% } %>
-                                <div class="card mb-4 shadow-sm border-0" style="margin-top: 10px;">
+                                <div class="card" style="border: 0px; margin-top:-20px;">
                                     <div class="card-header text-white bg-warning py-3"
                                         style="padding: 8px 16px; margin-bottom: 0;" id="headerlelang">
                                         <div class="d-flex align-items-center">
@@ -142,7 +142,7 @@
                                                             <td style="padding: 6px;">
                                                                 <%= item.id_barang %>
                                                             </td>
-                                                            <td style="padding: 6px;">
+                                                            <td style="padding: 6px; text-align: left;">
                                                                 <%= item.nama_barang %>
                                                             </td>
                                                             <td style="padding: 6px;">Rp <%=
@@ -208,7 +208,7 @@
                                                             <td>
                                                                 <%= item.id_barang %>
                                                             </td>
-                                                            <td>
+                                                            <td style="text-align: left;">
                                                                 <%= item.nama_barang %>
                                                             </td>
                                                             <td>Rp <%= item.harga_lelang.toLocaleString() %>
