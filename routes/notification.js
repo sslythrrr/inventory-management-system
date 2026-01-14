@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const logger = require('../utils/logger');
 const { requireLogin } = require('../routes/auth.js');
 
 module.exports = (notificationService) => {
@@ -9,7 +10,7 @@ module.exports = (notificationService) => {
             //console.log('Sending notifications:', notifications);
             res.json(notifications);
         } catch (error) {
-            console.error('Error fetching notifications:', error);
+            logger.error('Error fetching notifications:', error);
             res.status(500).json({ error: 'Internal server error' });
         }
     });
@@ -19,7 +20,7 @@ module.exports = (notificationService) => {
             const notifications = await notificationService.getUnreadNotifications();
             res.json({ count: notifications.length });
         } catch (error) {
-            console.error('Error fetching notification count:', error);
+            logger.error('Error fetching notification count:', error);
             res.status(500).json({ error: 'Internal server error' });
         }
     });
@@ -29,7 +30,7 @@ module.exports = (notificationService) => {
             await notificationService.markAsRead(req.params.id);
             res.json({ success: true });
         } catch (error) {
-            console.error('Error marking notification as read:', error);
+            logger.error('Error marking notification as read:', error);
             res.status(500).json({ error: 'Internal server error' });
         }
     });
@@ -39,7 +40,7 @@ module.exports = (notificationService) => {
             await notificationService.markAllAsRead();
             res.json({ success: true });
         } catch (error) {
-            console.error('Error marking all notifications as read:', error);
+            logger.error('Error marking all notifications as read:', error);
             res.status(500).json({ error: 'Internal server error' });
         }
     });

@@ -1,9 +1,6 @@
-<nav class="navbar navbar-expand bg-white topbar mb-4 static-top">
+<nav class="navbar navbar-expand bg-white topbar mb-3 static-top">
     <div class="container-fluid">
-        <button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop">
-            <i class="fas fa-bars"></i>
-        </button>
-        <h4 class="h4 mb-0 text-gray-800 d-none d-sm-inline-block" style="font-weight: 700;">
+        <h4 class="h4 mb-0 text-gray-800 d-none d-sm-inline-block" style="font-weight: 700; margin-left: 20px">
             <% if (locals.userRole === 'atasan') { %>
                 <%= locals.url.includes('/atasan/lelang') ? 'MANAJEMEN LELANG ATASAN' : locals.url.includes('/dashboard') ? 'DASHBOARD' : locals.url.includes('/barang') ? 'DATA BARANG' :
                     locals.url.includes('/pemilik') ? 'PEMILIK BARANG'
@@ -37,11 +34,11 @@
                     data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fas fa-bell fa-lg"></i>
                     <span
-                        class="badge bg-danger badge-counter position-absolute top-10 start-95 translate-middle"></span>
+                        class="badge badge-counter position-absolute top-10 start-95 translate-middle"></span>
                 </a>
                 <div class="dropdown-list dropdown-menu dropdown-menu-end animated--grow-in"
                     aria-labelledby="alertsDropdown" style="min-width: 300px; max-width: 400px;">
-                    <div class="dropdown-header bg-primary py-3 px-4 d-flex justify-content-between align-items-center">
+                    <div class="dropdown-header py-3 px-4 d-flex justify-content-between align-items-center" style="background-color: #474747 ;">
                         <span class="text-white fw-bold">Notifikasi</span>
                         <button class="btn btn-link btn-sm text-white text-decoration-none p-0"
                             onclick="markAllNotificationsAsRead()">

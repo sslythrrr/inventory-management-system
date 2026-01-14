@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db.js');
+const logger = require('../utils/logger');
 const { requireLogin } = require('../routes/auth.js');
 
 router.post('/', requireLogin, async (req, res) => {
@@ -67,7 +68,7 @@ router.get('/delete/:id_karyawan', requireLogin, async (req, res) => {
             message: 'Karyawan berhasil dihapus'
         });
     } catch (error) {
-        console.error("Error saat menghapus karyawan:", error);
+        logger.error("Error saat menghapus karyawan:", error);
         await db.query('ROLLBACK');
         res.redirect('/karyawan');
     }
@@ -134,7 +135,7 @@ router.get('/refresh', requireLogin, async (req, res) => {
             role: req.session.role || (req.session.atasanEmail ? 'atasan' : 'admin')
         });
     } catch (err) {
-        console.error('Error:', err);
+        logger.error('Error:', err);
         res.status(500).send('Terjadi kesalahan database');
     }
 });
@@ -184,7 +185,7 @@ router.get('/', requireLogin, async (req, res) => {
             role: req.session.role || (req.session.atasanEmail ? 'atasan' : 'admin')
         });
     } catch (err) {
-        console.error('Error:', err);
+        logger.error('Error:', err);
         res.status(500).send('Terjadi kesalahan database');
     }
 });

@@ -6,6 +6,7 @@ const multer = require('multer');
 const upload = multer({ storage: multer.memoryStorage() });
 const bcrypt = require('bcryptjs');
 const sharp = require('sharp');
+const logger = require('./utils/logger');
 const { initNotificationSystem } = require('./public/js/modules/notification-service');
 const app = express();
 const db = require('./db.js')
@@ -57,7 +58,7 @@ const getAdminData = async (req, res, next) => {
               res.locals.userRole = 'admin';
           }
       } catch (error) {
-          console.error('Error fetching admin data:', error);
+          logger.error('Error fetching admin data:', error);
       }
   } else if (req.session.atasanEmail) {
       try {
@@ -71,7 +72,7 @@ const getAdminData = async (req, res, next) => {
               res.locals.userRole = 'atasan';
           }
       } catch (error) {
-          console.error('Error fetching atasan data:', error);
+          logger.error('Error fetching atasan data:', error);
       }
   }
   next();

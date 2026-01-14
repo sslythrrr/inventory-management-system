@@ -4,6 +4,7 @@ const ExcelJS = require('exceljs');
 const path = require('path');
 const moment = require('moment');
 const db = require('../db.js');
+const logger = require('../utils/logger');
 const { requireLogin } = require('../routes/auth.js');
 
 router.get('/print',requireLogin, async (req, res) => {
@@ -168,7 +169,7 @@ router.get('/print',requireLogin, async (req, res) => {
         await workbook.xlsx.write(res);
 
     } catch (error) {
-        console.error('Error generating Excel:', error);
+        logger.error('Error generating Excel:', error);
         res.status(500).json({ error: 'Failed to generate Excel file' });
     } finally {
         if (connection) {
@@ -318,7 +319,7 @@ router.get('/printKaryawan',requireLogin, async (req, res) => {
         await workbook.xlsx.write(res);
 
     } catch (error) {
-        console.error('Error generating Excel:', error);
+        logger.error('Error generating Excel:', error);
         res.status(500).json({ error: 'Failed to generate Excel file' });
     } finally {
         if (connection) {
@@ -475,7 +476,7 @@ router.get('/printPenjualan',requireLogin, async (req, res) => {
         await workbook.xlsx.write(res);
 
     } catch (error) {
-        console.error('Error generating Excel:', error);
+        logger.error('Error generating Excel:', error);
         res.status(500).json({ error: 'Failed to generate Excel file' });
     } finally {
         if (connection) {

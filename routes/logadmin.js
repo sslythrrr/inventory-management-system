@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db.js');
+const logger = require('../utils/logger');
 const { requireLogin } = require('../routes/auth.js');
 
 router.get('/', requireLogin, async (req, res) => {
@@ -36,7 +37,7 @@ router.get('/', requireLogin, async (req, res) => {
     });
 
   } catch (err) {
-    console.error('Error fetching admin logs:', err);
+    logger.error('Error fetching admin logs:', err);
     res.status(500).send('Internal Server Error');
   }
 });

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db.js');
+const logger = require('../utils/logger');
 const { requireLogin } = require('../routes/auth.js');
 
 router.get('/',requireLogin, async (req, res) => {
@@ -41,8 +42,8 @@ router.get('/',requireLogin, async (req, res) => {
           role: req.session.role || (req.session.atasanEmail ? 'atasan' : 'admin')
       });
   } catch (error) {
-      console.error('Error fetching auction data:', error);
-      res.status(500).send('Failed to load auction page');
+    logger.error('Error fetching auction data:', error);
+    res.status(500).send('Error fetching auction data');
   }
 });
 
@@ -64,12 +65,6 @@ router.post('/konfirmasi-lelang/:id_barang',requireLogin, async (req, res) => {
         WHERE id_barang = ?
       `, [hargalelang, id_barang]);
 
-      // await connection.query(`
-      //   UPDATE Lelang 
-      //   SET harga_lelang = ?, status_lelang = 'sedang lelang', waktu_mulai = ?, waktu_selesai = ?
-      //   WHERE id_barang = ?
-      // `, [hargalelang, waktu_mulai, waktu_selesai, id_barang]);
-
       await connection.query(`
         UPDATE Lelang 
         SET harga_lelang = ?, waktu_mulai = ?, waktu_selesai = ?
@@ -89,7 +84,7 @@ router.post('/konfirmasi-lelang/:id_barang',requireLogin, async (req, res) => {
       connection.release();
     }
   } catch (error) {
-    console.error('Error konfirmasi lelang:', error);
+    logger.error('Error konfirmasi lelang:', error);
     res.status(500).json({
       success: false,
       message: 'Gagal mengkonfirmasi lelang'
@@ -131,7 +126,7 @@ router.post('/edit-lelang/:id_barang',requireLogin, async (req, res) => {
       connection.release();
     }
   } catch (error) {
-    console.error('Error memperbarui lelang:', error);
+    logger.error('Error memperbarui lelang:', error);
     res.status(500).json({
       success: false,
       message: 'Gagal memperbarui lelang'
@@ -213,7 +208,7 @@ router.post('/selesai-lelang/:id_barang',requireLogin, async (req, res) => {
       connection.release();
     }
   } catch (error) {
-    console.error('Error menyelesaikan lelang:', error);
+    logger.error('Error menyelesaikan lelang:', error);
     res.status(500).json({
       success: false,
       message: 'Gagal menyelesaikan lelang'
@@ -263,7 +258,7 @@ router.post('/hapus-lelang/:id_barang',requireLogin, async (req, res) => {
       connection.release();
     }
   } catch (error) {
-    console.error('Error menghapus lelang:', error);
+    logger.error('Error menghapus lelang:', error);
     res.status(500).json({
       success: false,
       message: 'Gagal menghapus lelang'
@@ -312,7 +307,7 @@ router.post('/batal-lelang/:id_barang',requireLogin, async (req, res) => {
       connection.release();
     }
   } catch (error) {
-    console.error('Error batal lelang:', error);
+    logger.error('Error batal lelang:', error);
     res.status(500).json({
       success: false,
       message: 'Gagal batal lelang'

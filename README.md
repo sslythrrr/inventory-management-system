@@ -1,6 +1,6 @@
 # Inventas
 
-A comprehensive web-based inventory management system designed to manage inventory, sales, auctions, and related business operations. It provides a multi-user environment with multiple roles (Admin, Manager) for efficient management. It features **Helena**, a Gemini-based chatbot.
+A comprehensive web-based inventory management system designed to manage inventory, sales, auctions, and related business operations. It provides a multi-user environment with multiple roles (Admin, Manager) for efficient management. It features **Helena**, a Groq-based chatbot.
 
 ---
 
@@ -17,7 +17,7 @@ A comprehensive web-based inventory management system designed to manage invento
 * **Authentication**: Secure login and session management for Admins and Superiors (`bcryptjs` for password hashing).
 * **Reporting (Laporan)**: Generate reports, with export options likely using `pdfkit` and `exceljs`.
 * **Real-time Notifications**: In-app notifications (using `socket.io`) for important events.
-* **AI Chatbot**: An integrated chatbot (powered by the Gemini API) for assistance.
+* **AI Chatbot**: An integrated chatbot (powered by the Groq API) for assistance.
 * **Activity Logging (Log Admin)**: Tracks actions performed by administrators.
 * **Profile Management (Profil)**: Allows users to manage their own profiles.
 
@@ -38,6 +38,7 @@ A comprehensive web-based inventory management system designed to manage invento
     * `socket.io`: Real-time communication for notifications
     * `pdfkit` & `exceljs`: PDF and Excel report generation
     * `dotenv`: Environment variable management
+    * `groq-sdk`: Groq API SDK for AI chatbot
     * `nodemon`: Development server utility
 
 ---
@@ -76,7 +77,7 @@ Before you begin, ensure you have the following installed on your system:
         DB_NAME=dbinventas
         
         # Chatbot API Key (from .env sample)
-        GEMINI_API_KEY=your_gemini_api_key_here
+        Groq_API_KEY=your_Groq_api_key_here
         ```
 
 4.  **Database Setup**:

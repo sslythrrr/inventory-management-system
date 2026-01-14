@@ -1,7 +1,6 @@
 const mysql = require('mysql2');
 const bcrypt = require('bcryptjs');
 
-// Database connection configuration
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
@@ -39,7 +38,6 @@ db.connect(async (err) => {
         console.log('Admin added successfully!');
         console.log('id_admin:', newAdmin.id_admin);
         console.log('Email:', newAdmin.email);
-        console.log('Password:', newAdmin.password);
       }
       
       // Close the database connection

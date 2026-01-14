@@ -1,12 +1,14 @@
-const express = require('express'); //rvk
+const express = require('express');
 const router = express.Router();
 const db = require('../db.js');
 const multer = require('multer');
 const sharp = require('sharp');
 const path = require('path');
 const fs = require('fs');
+const logger = require('../utils/logger');
+const imageConfig = require('../config/image.config');
 
-const uploadDir = path.join(__dirname, '../public/uploads/barang');
+const uploadDir = path.join(__dirname, '..', imageConfig.uploadDir);
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
@@ -23,9 +25,9 @@ const storage = multer.diskStorage({
 
 const upload = multer({ 
   storage: storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // max 5MB
+  limits: { fileSize: imageConfig.maxFileSize },
   fileFilter: function (req, file, cb) {
-    const allowedTypes = /jpeg|jpg|png|gif/;
+    const allowedTypes = imageConfig.allowedMimeTypes;
     const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
     const mimetype = allowedTypes.test(file.mimetype);
     
@@ -47,14 +49,13 @@ async function logAdminActivity(connection, req, jenis_aktivitas, detail_perubah
       `;
     await connection.query(logQuery, [req.adminId, jenis_aktivitas, detail_perubahan]);
   } catch (error) {
-    console.error('Error logging admin activity:', error);
+    logger.error('Error logging admin activity:', error);
     throw error;
   }
 }
 
 async function rebuildSearchIndex() {
     try {
-        console.log('🔄 Rebuilding search index...');
         const pythonApiUrl = 'http://localhost:5000/rebuild-index';
 
         const indexResponse = await fetch(pythonApiUrl, {
@@ -64,14 +65,11 @@ async function rebuildSearchIndex() {
 
         if (indexResponse.ok) {
             const indexData = await indexResponse.json();
-            console.log('✅ Search index rebuilt:', indexData.message);
             return true;
         } else {
-            console.error('⚠️ Failed to rebuild index:', await indexResponse.text());
             return false;
         }
     } catch (indexError) {
-        console.error('⚠️ Error rebuilding index:', indexError.message);
         return false;
     }
 }
@@ -97,12 +95,12 @@ router.post('/', requireLogin, upload.single('gambar_barang'), async (req, res) 
 
 if (req.file) {
   const inputPath = req.file.path;
-  const outputFilename = `inventas-${req.file.filename}`;
+  const outputFilename = `${imageConfig.filenamePrefix}${req.file.filename}`;
   const outputPath = path.join(uploadDir, outputFilename);
   
   await sharp(inputPath)
-    .resize({ width: 500 })
-    .jpeg({ quality: 80 })
+    .resize({ width: imageConfig.maxWidth })
+    .jpeg({ quality: imageConfig.quality })
     .toFile(outputPath);
   
   fs.unlinkSync(inputPath);
@@ -160,7 +158,7 @@ await connection.query(query, [
 
   } catch (error) {
     await connection.rollback();
-    console.error(error);
+    logger.error('Error adding barang:', error);
     res.status(500).json({ error: 'Terjadi kesalahan saat menambahkan barang' });
   } finally {
     connection.release();
@@ -199,7 +197,7 @@ router.get('/detail/:id', requireLogin, async (req, res) => {
       data: result[0]
     });
   } catch (error) {
-    console.error('Error:', error);
+    logger.error('Error fetching barang detail:', error);
     res.json({
       success: false,
       message: error.message
@@ -266,12 +264,12 @@ if (req.file) {
   }
   
   const inputPath = req.file.path;
-  const outputFilename = `inventas-${req.file.filename}`;
+  const outputFilename = `${imageConfig.filenamePrefix}${req.file.filename}`;
   const outputPath = path.join(uploadDir, outputFilename);
   
   await sharp(inputPath)
-    .resize({ width: 500 })
-    .jpeg({ quality: 80 })
+    .resize({ width: imageConfig.maxWidth })
+    .jpeg({ quality: imageConfig.quality })
     .toFile(outputPath);
   
   fs.unlinkSync(inputPath);
@@ -394,7 +392,7 @@ if (gambar_path) {
 
   } catch (error) {
     await connection.rollback();
-    console.error('Error updating barang:', error);
+    logger.error('Error updating barang:', error);
     res.status(500).json({
       success: false,
       message: 'Gagal mengupdate barang'
@@ -488,7 +486,7 @@ router.get('/refresh', requireLogin, async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error:', error);
+    logger.error('Error:', error);
     res.status(500).json({
       success: false,
       message: 'Internal Server Error'
@@ -598,7 +596,7 @@ router.get('/', requireLogin, async (req, res) => {
       role: req.session.role || (req.session.atasanEmail ? 'atasan' : 'admin')
     });
   } catch (error) {
-    console.error('Error:', error);
+    logger.error('Error:', error);
     res.status(500).send('Internal Server Error');
   } finally {
     connection.release();
@@ -657,7 +655,7 @@ if (barangData[0]?.gambar_barang) {
 
   } catch (error) {
     await connection.rollback();
-    console.error('Error during deletion:', error);
+    logger.error('Error during deletion:', error);
     res.status(500).send('Gagal menghapus barang');
   } finally {
     connection.release();

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db.js');
+const logger = require('../utils/logger');
 const { requireLogin } = require('../routes/auth.js');
 
 router.get('/', requireLogin, async (req, res) => {
@@ -45,7 +46,7 @@ LIMIT 10
     res.json(results);
 
   } catch (error) {
-    console.error('Search error:', error);
+    logger.error('Search error:', error);
     res.status(500).json({
       error: 'Internal server error',
       message: error.message

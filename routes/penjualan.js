@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../db.js');
-const { requireLogin } = require('./auth.js');
+const db = require('../db.js');const logger = require('../utils/logger');const { requireLogin } = require('./auth.js');
 
 router.get('/', requireLogin, async (req, res) => {
   const connection = await db.getConnection();
@@ -73,7 +72,7 @@ router.get('/', requireLogin, async (req, res) => {
       role: req.session.role || (req.session.atasanEmail ? 'atasan' : 'admin')
     });
   } catch (error) {
-    console.error('Error:', error);
+    logger.error('Error:', error);
     res.status(500).send('Internal Server Error');
   } finally {
     connection.release();
@@ -123,7 +122,7 @@ router.get('/:id', async (req, res) => {
             res.status(404).json({ error: 'Barang tidak ditemukan' });
         }
     } catch (error) {
-        console.error('Error:', error);
+        logger.error('Error:', error);
         res.status(500).json({ error: 'Terjadi kesalahan server' });
     } finally {
         connection.release();

@@ -8,6 +8,7 @@ const upload = multer({
     }
 });
 const db = require('../db.js');
+const logger = require('../utils/logger');
 const bcrypt = require('bcrypt');
 const { requireLogin } = require('../routes/auth.js');
 
@@ -67,7 +68,7 @@ router.get('/', requireLogin, async (req, res) => {
             });
         }
     } catch (error) {
-        console.error('Error:', error);
+        logger.error('Error:', error);
         res.status(500).send('Server error');
     }
 });
@@ -148,7 +149,7 @@ router.post('/update-profil', requireLogin, async (req, res) => {
 
     } catch (error) {
         await conn.rollback();
-        console.error('Error updating profile:', error);
+        logger.error('Error updating profile:', error);
         res.status(500).json({
             message: 'Server error while updating profile',
             error: error.message
@@ -205,7 +206,7 @@ router.post('/update-photo', requireLogin, upload.single('photo'), async (req, r
 
     } catch (error) {
         await conn.rollback();
-        console.error('Error updating photo:', error);
+        logger.error('Error updating photo:', error);
         res.status(500).json({
             message: 'Server error while updating photo',
             error: error.message
@@ -235,7 +236,7 @@ router.get('/photo/:id', requireLogin, async (req, res) => {
             res.status(404).send('Photo not found');
         }
     } catch (error) {
-        console.error('Error fetching photo:', error);
+        logger.error('Error fetching photo:', error);
         res.status(500).send('Error fetching photo');
     }
 });

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db');
 const bcrypt = require('bcryptjs');
+const logger = require('../utils/logger');
 const { requireAtasanLogin } = require('../routes/auth.js');
 
 router.get('/login', (req, res) => {
@@ -10,7 +11,6 @@ router.get('/login', (req, res) => {
 
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
-  console.log('Login attempt:', email);
 
   try {
     const [rows] = await db.query(
@@ -19,7 +19,6 @@ router.post('/login', async (req, res) => {
       );
 
     if (rows.length === 0) {
-      console.log('Login failed: User not found');
       return res.json({ success: false, message: 'Email atau password salah atau tidak terdaftar sebagai atasan.' });
     }
 
@@ -33,15 +32,10 @@ router.post('/login', async (req, res) => {
     req.session.atasanNama = rows[0].nama_atasan;
     req.session.role = 'atasan';
 
-    console.log('Session atasanEmail:', req.session.atasanEmail);
-    console.log('Session atasanId:', req.session.atasanId);
-    console.log('Session atasanNama:', req.session.atasanNama);
-    console.log('Session role:', req.session.role);
-
     res.json({ success: true, message: 'Login berhasil' });
 
   } catch (error) {
-    console.error('Login error:', error);
+    logger.error('Login error:', error);
     res.json({ success: false, message: 'Terjadi kesalahan sistem' });
   }
 });
@@ -69,14 +63,6 @@ router.get('/lelang', requireAtasanLogin, async (req, res) => {
       JOIN Lelang l ON l.id_barang = b.id_barang
       WHERE l.status_lelang = 'sedang lelang'
     `);
-
-    // const [prosesLelang] = await db.query(`
-    //   SELECT b.id_barang, b.nama_barang, l.harga_lelang, l.waktu_mulai, l.waktu_selesai
-    //   FROM Barang b
-    //   JOIN Lelang l ON l.id_barang = b.id_barang
-    //   WHERE l.status_konfirmasi_atasan = 'approved' AND l.status_lelang = '	
-    //   sedang lelang'
-    // `);
 
     res.render('atasan_lelang', {
       akanLelang,

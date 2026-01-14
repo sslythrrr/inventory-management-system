@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db.js');
+const logger = require('../utils/logger');
 const { requireLogin } = require('../routes/auth.js');
 
 router.get('/', requireLogin, async (req, res) => {
@@ -71,7 +72,7 @@ router.get('/', requireLogin, async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error:', error);
+    logger.error('Error:', error);
     res.status(500).send('Internal Server Error');
   }
 });
@@ -81,7 +82,7 @@ router.get('/api/karyawan-count', requireLogin, async (req, res) => {
     const [result] = await db.query('SELECT COUNT(id_karyawan) as total FROM karyawan');
     res.json({ total: result[0]?.total || 0 });
   } catch (error) {
-    console.error('Error karyawan-count:', error);
+    logger.error('Error karyawan-count:', error);
     res.status(200).json({ total: 0 });
   }
 });
@@ -91,7 +92,7 @@ router.get('/api/kategori-count', requireLogin, async (req, res) => {
     const [result] = await db.query('SELECT COUNT(DISTINCT kategori) as total FROM barang WHERE kategori IS NOT NULL AND kategori != ""');
     res.json({ total: result[0]?.total || 0 });
   } catch (error) {
-    console.error('Error kategori-count:', error);
+    logger.error('Error kategori-count:', error);
     res.status(200).json({ total: 0 });
   }
 });
@@ -106,7 +107,7 @@ router.get('/api/recent-activities', requireLogin, async (req, res) => {
     `);
     res.json({ activities: activities || [] });
   } catch (error) {
-    console.error('Error recent-activities:', error);
+    logger.error('Error recent-activities:', error);
     res.status(200).json({ activities: [] });
   }
 });
@@ -123,7 +124,7 @@ router.get('/api/top-kategori', requireLogin, async (req, res) => {
     `);
     res.json({ categories: categories || [] });
   } catch (error) {
-    console.error('Error top-kategori:', error);
+    logger.error('Error top-kategori:', error);
     res.status(200).json({ categories: [] });
   }
 });
@@ -140,7 +141,7 @@ router.get('/api/lelang-berakhir', requireLogin, async (req, res) => {
     `);
     res.json({ auctions: auctions || [] });
   } catch (error) {
-    console.error('Error lelang-berakhir:', error);
+    logger.error('Error lelang-berakhir:', error);
     res.status(200).json({ auctions: [] });
   }
 });

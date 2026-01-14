@@ -1,13 +1,13 @@
 <nav class="navbar align-items-start sidebar sidebar-dark accordion">
     <div class="sidebar-toggle" onclick="toggleSidebar()">
-        <i class="fas fa-chevron-left"></i>
+        <i class="fa fa-bars"></i>
     </div>
     <div class="container-fluid d-flex flex-column p-0">
-        <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
-            <img src="/img/inventas.png" style="width: 150px; padding: 0px; margin-right: 30px;margin-top: 50px;">
+        <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="/dashboard">
+            <img src="/img/inventas.png" style="width: 150px; padding: 0px; margin-right: 30px;margin-top: 65px;">
         </a>
         <hr class="sidebar-divider my-3">
-        <ul class="navbar-nav text-light" id="accordionSidebar" style="margin-top: 20px;">
+        <ul class="navbar-nav text-light" id="accordionSidebar" style="margin-top: 40px;">
             <li class="nav-item">
                 <a class="nav-link <%= (locals.url && url.includes('/dashboard')) ? 'active' : '' %>" href="/dashboard">
                     <i class="material-icons">dashboard</i>
@@ -81,15 +81,6 @@
         document.documentElement.classList.remove('sidebar-collapsed-init');
 
         sidebar.classList.toggle('collapsed');
-
-        if (sidebar.classList.contains('collapsed')) {
-            toggleIcon.classList.remove('fa-chevron-left');
-            toggleIcon.classList.add('fa-chevron-right');
-        } else {
-            toggleIcon.classList.remove('fa-chevron-right');
-            toggleIcon.classList.add('fa-chevron-left');
-        }
-
         localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
     }
 
@@ -100,7 +91,6 @@
             setTimeout(() => {
                 document.documentElement.classList.remove('sidebar-collapsed-init');
                 document.querySelector('.sidebar').classList.add('collapsed');
-                document.querySelector('.sidebar-toggle i').classList.replace('fa-chevron-left', 'fa-chevron-right');
             }, 0);
         }
     });

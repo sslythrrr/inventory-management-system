@@ -72,7 +72,6 @@ h4::after {
 
 .form-control:focus {
     border-color: rgba(212, 175, 55, 0.5);
-    background: rgba(255, 255, 255, 0.08);
     outline: none;
 }
 

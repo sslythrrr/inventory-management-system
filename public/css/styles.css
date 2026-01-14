@@ -6,7 +6,7 @@ body {
 .sidebar {
     background: linear-gradient(180deg, #2d2d2d 0%, #1a1a1a 100%);
     width: 230px !important;
-    transition: all 0.2s ease;
+    transition: none !important;
 }
 
 .sidebar .nav-item .nav-link {
@@ -14,7 +14,7 @@ body {
     color: #a8a8a8 !important;
     border-radius: 6px;
     margin: 4px 12px;
-    transition: 0.2s;
+    transition: none !important;
 }
 
 .sidebar .nav-item .nav-link:hover {
@@ -40,7 +40,6 @@ body {
 
 .topbar {
     background: #fff;
-    border-bottom: 1px solid #e5e7eb;
 }
 
 .topbar .navbar-search {
@@ -527,47 +526,48 @@ body {
 /* Sidebar Toggle Styles */
 .sidebar-toggle {
     position: absolute;
-    top: 20px;
-    right: -15px;
+    top: 19px;
+    right: -35px;
     width: 30px;
     height: 30px;
-    background: #2d2d2d;
-    border: 2px solid #d4af37;
-    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     z-index: 1000;
-    transition: all 0.3s ease;
+    transition: none !important;
 }
 
-.sidebar-toggle:hover {
-    background: #d4af37;
+.sidebar-toggle:hover i{
+    color: #dad422;
+    font-size:21px;
+    transition: transform 0.3s ease;
     transform: scale(1.1);
 }
 
 .sidebar-toggle i {
-    color: #fff;
-    font-size: 14px;
+    color: #000000;
+    font-size:21px;
     transition: transform 0.3s ease;
 }
 
 .sidebar.collapsed {
     width: 80px !important;
+    transition: none !important;
 }
 
 .sidebar.collapsed .sidebar-brand {
     width: 80px !important;
     justify-content: center !important;
     padding: 0 !important;
+    transition: none !important;
 }
 
 .sidebar.collapsed .sidebar-brand img {
     width: 100px !important;
     margin-right: 0 !important;
-    margin-top: 50px !important;
-    transition: all 0.3s ease;
+    margin-top: 65px !important;
+    transition: all 0.30s ease;
 }
 
 .sidebar.collapsed .container-fluid {
@@ -591,7 +591,6 @@ body {
 .sidebar.collapsed .nav-link .material-icons,
 .sidebar.collapsed .nav-link .fa,
 .sidebar.collapsed .nav-link .fas {
-    margin-right: 0 !important;
     font-size: 16px !important;
     width: 22px;
     text-align: center;
@@ -604,13 +603,14 @@ body {
 
 .sidebar.collapsed .navbar-nav {
     width: 100%;
+    margin-right: 0 !important;
 }
 
 .sidebar-brand,
 .sidebar .nav-link i,
 .sidebar .nav-link .material-icons,
 .sidebar .nav-link span {
-    transition: all 0.3s ease;
+    transition: none !important;
 }
 
 .sidebar .nav-link {
@@ -619,12 +619,12 @@ body {
 }
 
 .sidebar .container-fluid {
-    transition: all 0.3s ease;
+    transition: none !important;
     width: 100%;
 }
 
 .sidebar .sidebar-brand {
-    transition: all 0.3s ease;
+    transition: none !important;
 }
 
 .sidebar .navbar-nav {
@@ -632,7 +632,7 @@ body {
 }
 
 #content-wrapper {
-    transition: margin-left 0.3s ease;
+    transition: none !important;
 }
 
 .sidebar-collapsed-init .sidebar {

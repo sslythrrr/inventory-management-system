@@ -1,7 +1,6 @@
 const mysql = require('mysql2');
 const bcrypt = require('bcryptjs');
 
-// Database connection configuration
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
@@ -77,7 +76,6 @@ db.connect(async (err) => {
       console.log('id_atasan:', newAtasan.id_atasan);
       console.log('Nama:', newAtasan.nama_atasan);
       console.log('Email:', newAtasan.email);
-      console.log('Password:', newAtasan.password);
     } else {
       console.log('Atasan already exists with email:', newAtasan.email);
     }

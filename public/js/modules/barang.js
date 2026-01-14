@@ -320,8 +320,7 @@ if (window.location.pathname === "/barang") {
     const formHandler = new BarangFormHandler();
 
     function setupCleave() {
-        // Cleave is already initialized in BarangFormHandler
-        // This function is kept for backward compatibility
+        // Cleave already initialized
     }
 
     const role = "<%= role %>";
@@ -711,11 +710,9 @@ if (window.location.pathname === "/barang") {
                 urlParams.set('page', page);
                 history.pushState({}, '', `${window.location.pathname}?${urlParams.toString()}`);
 
-                // call table refresh (your existing function)
                 if (typeof updateTable === 'function') {
                     updateTable();
                 } else {
-                    // fallback: force a reload if updateTable not present
                     window.location.href = `${window.location.pathname}?${urlParams.toString()}`;
                 }
             };

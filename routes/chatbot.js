@@ -4,11 +4,10 @@ const axios = require('axios');
 const db = require('../db');
 const fs = require('fs');
 const path = require('path');
+const logger = require('../utils/logger');
 
-const { GoogleGenerativeAI } = require('@google/generative-ai');
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+const Groq = require('groq-sdk');
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 const conversationContexts = new Map();
 
@@ -32,7 +31,7 @@ function updateConversationContext(sessionId, data) {
 
 function clearOldContexts() {
     const now = Date.now();
-    const timeout = 30 * 60 * 1000; //30 mnt
+    const timeout = 30 * 60 * 1000;
     for (const [key, value] of conversationContexts.entries()) {
         if (now - value.timestamp > timeout) {
             conversationContexts.delete(key);
@@ -40,7 +39,7 @@ function clearOldContexts() {
     }
 }
 
-setInterval(clearOldContexts, 10 * 60 * 1000); //10 menit
+setInterval(clearOldContexts, 10 * 60 * 1000);
 
 function getDatabaseSchema() {
     try {
@@ -58,7 +57,7 @@ INSTRUKSI:
 - Pahami tipe data dan constraint untuk validasi
 `;
     } catch (error) {
-        console.error('Error reading SQL file:', error);
+        logger.error('Error reading SQL file:', error);
 
         return `
 DATABASE TABLES:
@@ -204,16 +203,38 @@ User: "cuaca hari ini gimana?"
 
 CRITICAL: Response HARUS pure JSON, natural & friendly!`;
 
-        const chat = model.startChat({
-            history: conversationHistory,
-            generationConfig: {
-                maxOutputTokens: 8192,
-                temperature: 0.8,
-            },
+        // Build messages array for Groq
+        const messages = [
+            {
+                role: 'system',
+                content: systemPrompt
+            }
+        ];
+
+        // Add conversation history
+        conversationHistory.forEach(msg => {
+            messages.push({
+                role: msg.role === 'user' ? 'user' : 'assistant',
+                content: msg.content
+            });
         });
 
-        const result = await chat.sendMessage(systemPrompt + "\n\nUser: " + userMessage);
-        const responseText = result.response.text();
+        // Add current user message
+        messages.push({
+            role: 'user',
+            content: userMessage
+        });
+
+        const chatCompletion = await groq.chat.completions.create({
+            messages: messages,
+            model: 'llama-3.3-70b-versatile',
+            temperature: 0.7,
+            max_tokens: 2048,
+            top_p: 1,
+            stream: false
+        });
+
+        const responseText = chatCompletion.choices[0]?.message?.content || '';
 
         let jsonResponse;
         try {
@@ -238,8 +259,7 @@ CRITICAL: Response HARUS pure JSON, natural & friendly!`;
             }
 
         } catch (parseError) {
-            console.error('Error parsing Gemini response:', parseError);
-            console.error('Raw response:', responseText);
+            logger.error('Error parsing Groq response:', parseError);
 
             jsonResponse = {
                 intent: 'fallback',
@@ -253,7 +273,7 @@ CRITICAL: Response HARUS pure JSON, natural & friendly!`;
 
         return jsonResponse;
     } catch (error) {
-        console.error('Gemini API Error:', error);
+        logger.error('Groq API Error:', error);
         throw error;
     }
 }
@@ -261,7 +281,6 @@ CRITICAL: Response HARUS pure JSON, natural & friendly!`;
 async function executeAndFormatQuery(sqlQuery, intent) {
     try {
         const cleanQuery = sanitizeSQL(sqlQuery);
-        console.log('Executing SQL:', cleanQuery);
 
         const [rows] = await db.query(cleanQuery);
 
@@ -288,7 +307,7 @@ async function executeAndFormatQuery(sqlQuery, intent) {
             count: rows.length
         };
     } catch (error) {
-        console.error('SQL Execution Error:', error);
+        logger.error('SQL Execution Error:', error);
         return {
             success: false,
             message: 'Terjadi kesalahan saat mengambil data.',
@@ -412,18 +431,9 @@ router.post('/chat', async (req, res) => {
     try {
         const { message, history = [], sessionId = 'default' } = req.body;
 
-        console.log('\n=== CHAT REQUEST ===');
-        console.log('User:', message);
-        console.log('Session ID:', sessionId);
-
         const context = getConversationContext(sessionId);
-        console.log('Context:', JSON.stringify(context, null, 2));
 
         const geminiResponse = await chatWithGemini(message, history, context);
-
-        console.log('Gemini Intent:', geminiResponse.intent);
-        console.log('Needs Query:', geminiResponse.needsQuery);
-        console.log('Is Follow-Up:', geminiResponse.isFollowUp);
         console.log('Display Type:', geminiResponse.displayType);
 
         let finalResponse = geminiResponse.response;
@@ -523,7 +533,7 @@ router.post('/chat', async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Chat Error:', error);
+        logger.error('Chat Error:', error);
 
         res.status(500).json({
             intent: 'error',

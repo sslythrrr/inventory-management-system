@@ -1,17 +1,8 @@
 const schedule = require('node-schedule');
-const mysql = require('mysql2');
 
 class NotificationService {
   constructor(db) {
-    this.db = mysql.createPool({
-      host: 'localhost',
-      user: 'root',
-      password: '',
-      database: 'dbinventas',
-      waitForConnections: true,
-      connectionLimit: 10,
-      queueLimit: 0
-    }).promise();
+    this.db = db;
   }
 
   async getAllNotifications(page, limit) {

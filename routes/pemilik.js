@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db.js');
+const logger = require('../utils/logger');
 const { requireLogin } = require('../routes/auth.js');
 
 router.get('/', requireLogin, async (req, res) => {
@@ -121,7 +122,7 @@ router.get('/', requireLogin, async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Error:', error);
+        logger.error('Error:', error);
         res.status(500).send('Internal Server Error');
     }
 });
@@ -151,7 +152,7 @@ router.get('/histori-kepemilikan/:idBarang', requireLogin, async (req, res) => {
 
         res.json(histori);
     } catch (error) {
-        console.error('Error fetching ownership history:', error);
+        logger.error('Error fetching ownership history:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });

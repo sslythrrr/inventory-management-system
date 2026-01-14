@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db.js');
+const logger = require('../utils/logger');
 
 router.get('/', async (req, res) => {
     try {
@@ -46,7 +47,7 @@ router.get('/', async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Error:', error);
+        logger.error('Error:', error);
         res.status(500).send('Terjadi kesalahan server');
     }
 });
@@ -119,7 +120,7 @@ router.post('/konfirmasi', async (req, res) => {
 
     } catch (error) {
         await conn.rollback();
-        console.error('Error:', error);
+        logger.error('Error:', error);
         res.status(500).json({
             success: false,
             message: error.message || 'Terjadi kesalahan saat memproses penjualan'
