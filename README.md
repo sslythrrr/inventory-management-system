@@ -1,8 +1,9 @@
 # Inventas
 
 A comprehensive web-based inventory management system designed to manage inventory, sales, auctions, and related business operations. It provides a multi-user environment with multiple roles (Admin, Manager) for efficient management. It features **Helena**, a Groq-based chatbot.
-
 ---
+
+(NLP based chatbot: https://github.com/sslythrrr/inventas-inventory-management)
 
 ## Key Features
 
